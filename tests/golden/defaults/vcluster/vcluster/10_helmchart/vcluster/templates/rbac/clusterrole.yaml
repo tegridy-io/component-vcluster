@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: vcluster
+    chart: vcluster-0.19.0
+    heritage: Helm
+    release: vcluster
+  name: vc-vcluster-v-syn-vcluster
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - persistentvolumes
+    verbs:
+      - create
+      - delete
+      - patch
+      - update
+      - get
+      - watch
+      - list
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+      - watch
+      - list
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - watch
+      - list

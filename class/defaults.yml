@@ -1,4 +1,61 @@
 parameters:
   vcluster:
-    =_metadata: {}
-    namespace: syn-vcluster
+    =_metadata:
+      multi_instance: true
+
+    # --- Component configuration ----------------------------------------------
+
+    namespace:
+      annotations: {}
+      labels: {}
+      name: syn-${_instance}
+
+    charts:
+      vcluster:
+        source: https://charts.loft.sh
+        version: 0.19.0
+
+    images:
+      vcluster:
+        registry: docker.io
+        repository: rancher/k3s
+        tag: v1.29.0-k3s1
+
+    ingress:
+      enabled: true
+      url: vcluster.local
+      annotations:
+        nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+    storageClass: ''
+
+    extraArgs: []
+
+    sync:
+      ingresses:
+        enabled: true
+      persistentvolumes:
+        enabled: true
+      hoststorageclasses:
+        enabled: true
+
+    # --- Helm configuration ---------------------------------------------------
+
+    helmValues:
+      ingress:
+        enabled: ${vcluster:ingress:enabled}
+        host: ${vcluster:ingress:url}
+        annotations: ${vcluster:ingress:annotations}
+      sync: ${vcluster:sync}
+      syncer:
+        extraArgs:
+          - --out-kube-config-server=https://${vcluster:ingress:url}
+      storage:
+        persistence: true
+        size: 5Gi
+        className: ${vcluster:storageClass}
+      vcluster:
+        image: ${vcluster:images:vcluster:registry}/${vcluster:images:vcluster:repository}:${vcluster:images:vcluster:tag}
+        extraArgs: ${vcluster:extraArgs}
