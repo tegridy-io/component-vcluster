@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+  name: vcluster
+  namespace: syn-vcluster
+spec:
+  rules:
+    - host: vcluster.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: vcluster
+                port:
+                  name: https
+            path: /
+            pathType: ImplementationSpecific
