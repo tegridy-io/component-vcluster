@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: vcluster
-    chart: vcluster-0.19.0
+    chart: vcluster-0.19.1
     heritage: Helm
     release: vcluster
   name: vcluster-init-manifests
