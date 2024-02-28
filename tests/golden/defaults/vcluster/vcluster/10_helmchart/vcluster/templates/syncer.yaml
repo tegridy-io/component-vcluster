@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   labels:
     app: vcluster
-    chart: vcluster-0.19.1
+    chart: vcluster-0.19.3
     heritage: Helm
     release: vcluster
   name: vcluster
@@ -71,7 +71,7 @@ spec:
               value: '---'
             - name: VCLUSTER_TELEMETRY_CONFIG
               value: '{"disabled":false,"instanceCreator":"helm","machineID":"","platformInstanceID":"","platformUserID":""}'
-          image: ghcr.io/loft-sh/vcluster:0.19.1
+          image: ghcr.io/loft-sh/vcluster:0.19.3
           livenessProbe:
             failureThreshold: 60
             httpGet:
@@ -100,6 +100,13 @@ spec:
             allowPrivilegeEscalation: false
             runAsGroup: 0
             runAsUser: 0
+          startupProbe:
+            failureThreshold: 300
+            httpGet:
+              path: /readyz
+              port: 8443
+              scheme: HTTPS
+            periodSeconds: 6
           volumeMounts:
             - mountPath: /binaries
               name: binaries
