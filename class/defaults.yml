@@ -19,7 +19,7 @@ parameters:
       vcluster:
         registry: docker.io
         repository: rancher/k3s
-        tag: v1.29.3-k3s1
+        tag: v1.30.3-k3s1
 
     ingress:
       enabled: true

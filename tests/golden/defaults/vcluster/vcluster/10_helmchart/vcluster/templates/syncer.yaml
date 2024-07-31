@@ -130,7 +130,7 @@ spec:
             - cp /bin/k3s /binaries/k3s
           command:
             - /bin/sh
-          image: docker.io/rancher/k3s:v1.29.3-k3s1
+          image: docker.io/rancher/k3s:v1.30.3-k3s1
           name: vcluster
           resources:
             limits:
